@@ -12,4 +12,6 @@ public interface IExcelImporter {
 	public void setDestination(EObject destinationObject);
 	
 	public void importEnded();
+
+	public String getName();
 }

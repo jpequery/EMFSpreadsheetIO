@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Excel Importer
-Bundle-SymbolicName: org.obeonetwork.excel.importer
+Bundle-SymbolicName: org.obeonetwork.excel.importer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.obeonetwork.excel.importer.Activator
 Bundle-Vendor: Obeo

@@ -1,22 +1,26 @@
 package org.obeonetwork.excel.importer.ui.popup.actions;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.obeonetwork.excel.importer.ExcelImportException;
 import org.obeonetwork.excel.importer.ExcelImporterEngine;
+import org.obeonetwork.excel.importer.ExcelImporterManager;
 import org.obeonetwork.excel.importer.IExcelImporter;
-import org.obeonetwork.excel.importer.ecore.example.ECoreExcelImporter;
+import org.obeonetwork.excel.importer.ui.ImporterSelectionDialog;
 
 public class ExcelImportAction implements IObjectActionDelegate {
 
@@ -44,28 +48,31 @@ public class ExcelImportAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 
-		IExcelImporter importer = new ECoreExcelImporter ();
-		final ExcelImporterEngine engine = new ExcelImporterEngine(excelFile, destinationObject);
-		engine.setImporter(importer);
-			TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(destinationObject);
-			RecordingCommand myCommand = new RecordingCommand(ted) {
-				
-				@Override
-				protected void doExecute() {
-					try {
-						engine.run();
-					} catch (ExcelImportException e) {
-						e.printStackTrace();
-					}
-				}
-			}; 			
-		ted.getCommandStack().execute(myCommand);
+		List<IExcelImporter> importers = ExcelImporterManager.eINSTANCE.getAllImporters ();
 		
-		MessageDialog.openInformation(
-				shell,
-				"Excel Importer UI",
-				"Import... was executed.");
+		ImporterSelectionDialog dialog = new ImporterSelectionDialog(shell, importers);
+		
+		if (dialog.open() == Dialog.OK){
+			IExcelImporter importer = dialog.getSelectedImporter ();
+			final ExcelImporterEngine engine = new ExcelImporterEngine(excelFile, destinationObject);
+			engine.setImporter(importer);
+			
+			
+				TransactionalEditingDomain ted = TransactionUtil.getEditingDomain(destinationObject);
+				RecordingCommand myCommand = new RecordingCommand(ted) {
+					
+					@Override
+					protected void doExecute() {
+						try {
+							engine.run();
+						} catch (ExcelImportException e) {
+							e.printStackTrace();
+						}
+					}
+				}; 			
+			ted.getCommandStack().execute(myCommand);
 		}
+	}
 
 	/**
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)

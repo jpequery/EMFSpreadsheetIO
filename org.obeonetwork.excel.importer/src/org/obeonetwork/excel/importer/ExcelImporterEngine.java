@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EObject;
 
 public class ExcelImporterEngine {
@@ -68,8 +67,15 @@ public class ExcelImporterEngine {
 			List<String> result = new ArrayList<String>(line.getLastCellNum());
 			Iterator<Cell> lineIterator = line.cellIterator();
 			
-			while (lineIterator.hasNext()) {
+			// the iterator doesn't return empty cells, so we need to
+			// insert them as empty string in the resulting list
+			int currentColumn = 0;
+			while (lineIterator.hasNext()) {				
 				Cell cell = lineIterator.next();
+				for (int i=currentColumn; i < cell.getColumnIndex(); i++){
+					// ratrapage auto due aux colonnes vides
+					result.add("");
+				}
 				String strCell = "";
 				int type = cell.getCellType();
 				if (type == Cell.CELL_TYPE_NUMERIC){
@@ -77,7 +83,8 @@ public class ExcelImporterEngine {
 				} else {
 					strCell = cell.getStringCellValue();
 				}
-				result.add(strCell);
+				result.add(strCell.trim()); // trim a valider à l'usage
+				currentColumn++;
 			}
 			return result;			
 		}

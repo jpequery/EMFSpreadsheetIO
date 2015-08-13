@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Excel Importer Example
-Bundle-SymbolicName: org.obeonetwork.excel.importer.ecore.example
+Bundle-SymbolicName: org.obeonetwork.excel.importer.ecore.example;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.obeonetwork.excel.importer.ecore.example.Activator
 Bundle-Vendor: Obeo
