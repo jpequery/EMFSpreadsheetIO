@@ -48,6 +48,10 @@ public class ExcelImporterEngine {
 				_importer.setDestination(_destination);
 				Iterator<Row> rowIterator = sheet.iterator();
 				List<String> line= parseLine (rowIterator.next());
+				// removing padding top lines
+				while (line.size() ==  0) {
+					line= parseLine (rowIterator.next());					
+				}
 				_importer.computeFirstLine(line);
 				
 				
@@ -64,6 +68,8 @@ public class ExcelImporterEngine {
 		}
 
 		private List<String> parseLine(Row line) {
+			if (line.getLastCellNum()<0) 
+				return new ArrayList<String>();
 			List<String> result = new ArrayList<String>(line.getLastCellNum());
 			Iterator<Cell> lineIterator = line.cellIterator();
 			
