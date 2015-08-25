@@ -78,9 +78,10 @@ public class ExcelImporterEngine {
 			int currentColumn = 0;
 			while (lineIterator.hasNext()) {				
 				Cell cell = lineIterator.next();
-				for (int i=currentColumn; i < cell.getColumnIndex(); i++){
-					// ratrapage auto due aux colonnes vides
+				while (currentColumn < cell.getColumnIndex()){
+					// rattrapage auto due aux colonnes vides
 					result.add("");
+					currentColumn ++;
 				}
 				String strCell = "";
 				int type = cell.getCellType();
