@@ -23,6 +23,13 @@
                enablesFor="2"
                id="org.obeonetwork.excel.importer.ui.newAction">
          </action>
+         <action
+               class="org.obeonetwork.excel.importer.ui.popup.actions.ExcelExportAction"
+               enablesFor="1"
+               id="org.obeonetwork.excel.importer.ui.ExportAction"
+               label="Export..."
+               menubarPath="org.obeonetwork.excel.importer.ui.menu1/group1">
+         </action>
       </objectContribution>
    </extension>
 
