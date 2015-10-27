@@ -73,8 +73,8 @@ public class ExcelExporterEngine {
 				
 			}
 			URI uri = _startupObject.eResource().getURI();
-			URI excelURI = uri.trimFileExtension().appendFileExtension(".xlsx");
-			IFile excelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path (uri.toPlatformString(true))); 
+			URI excelURI = uri.trimFileExtension().appendFileExtension("xlsx");
+			IFile excelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path (excelURI.toPlatformString(true))); 
 			_file = new FileOutputStream(excelFile.getRawLocation().makeAbsolute().toFile());
 			sheet.getWorkbook().write(_file);
 		} catch (IOException e){
