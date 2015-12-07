@@ -2,6 +2,7 @@ package org.obeonetwork.excel.exporter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -14,8 +15,14 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
-import com.sun.javafx.PlatformUtil;
+import org.polarsys.capella.core.data.capellacore.AbstractPropertyValue;
+import org.polarsys.capella.core.data.capellacore.BooleanPropertyValue;
+import org.polarsys.capella.core.data.capellacore.CapellaElement;
+import org.polarsys.capella.core.data.capellacore.EnumerationPropertyValue;
+import org.polarsys.capella.core.data.capellacore.FloatPropertyValue;
+import org.polarsys.capella.core.data.capellacore.IntegerPropertyValue;
+import org.polarsys.capella.core.data.capellacore.StringPropertyValue;
+import org.polarsys.kitalpha.emde.model.ElementExtension;
 
 public class ExcelExporterEngine {
 	private IFile _excelFile;
@@ -51,6 +58,7 @@ public class ExcelExporterEngine {
 			List<EObject> objectsToExport = _exporter.getObjectsToExport (_startupObject);
 
 			List<EStructuralFeature> featuresToExport = _exporter.getFeaturesToExport ();
+			List<String> pvToExport = _exporter.getPropertyValuesToExport();
 
 			// creating the header
 			XSSFRow row = sheet.createRow(0);
@@ -67,9 +75,25 @@ public class ExcelExporterEngine {
 				XSSFRow datarow = sheet.createRow(line++);
 				for (EStructuralFeature feature : featuresToExport) {
 					XSSFCell cel = datarow.createCell(column++);
- 					Object obj =eObject.eGet(feature);
+					Object obj = null; 
+					if (eObject.eClass().getEAllAttributes().contains(feature))
+						obj =eObject.eGet(feature);
+					if (obj == null && eObject instanceof CapellaElement) {
+						CapellaElement capellaElement = (CapellaElement) eObject;
+						for (ElementExtension extension: capellaElement.getOwnedExtensions()) {
+							if (extension.eClass().getEAllAttributes().contains(feature))
+								obj =extension.eGet(feature);
+							if (obj != null) break;
+						}
+					}
 					cel.setCellValue(obj==null?"null":obj.toString());
 				}
+				
+				for (AbstractPropertyValue pv : getPV (eObject, pvToExport)) {
+					XSSFCell cel = datarow.createCell(column++);
+					cel.setCellValue (getPVValue (pv));
+				}
+				
 				
 			}
 			URI uri = _startupObject.eResource().getURI();
@@ -80,5 +104,35 @@ public class ExcelExporterEngine {
 		} catch (IOException e){
 			throw new ExcelExportException(e);
 		}
+	}
+
+	private String getPVValue(AbstractPropertyValue pv) {
+		if (pv instanceof StringPropertyValue)
+			return ((StringPropertyValue)pv).getValue();
+		if (pv instanceof EnumerationPropertyValue)
+			return ((EnumerationPropertyValue)pv).getValue().toString();
+		if (pv instanceof BooleanPropertyValue)
+			return "true";
+		if (pv instanceof FloatPropertyValue)
+			return Float.toString(((FloatPropertyValue)pv).getValue());
+		if (pv instanceof IntegerPropertyValue)
+			return Integer.toString(((IntegerPropertyValue)pv).getValue());
+		throw new RuntimeException("IncompatiblePropertyValue " + pv.toString());
+	}
+
+	private List<AbstractPropertyValue> getPV(EObject eObject, List<String> pvToExport) {
+		if (eObject instanceof CapellaElement) {
+			CapellaElement capellaElement = (CapellaElement) eObject;
+			if (pvToExport == IExcelExporter.ALL_PROPERTY_VALUES)
+				return capellaElement.getAppliedPropertyValues();
+			List<AbstractPropertyValue> result = new ArrayList<AbstractPropertyValue>(capellaElement.getAppliedPropertyValues().size());
+			
+			for (AbstractPropertyValue apv : capellaElement.getAppliedPropertyValues()) {
+				if (pvToExport.contains(apv.getName()))
+					result.add (apv);
+			}
+			return result;
+		}
+		return new ArrayList<AbstractPropertyValue>(0);
 	}
 }
