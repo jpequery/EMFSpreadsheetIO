@@ -61,6 +61,7 @@ public class ExcelImporterEngine {
 					_importer.computeOtherLine(row.getRowNum(), line);
 				}
 				
+				_importer.importEnded();
 				
 			} catch (Exception e) {
 				throw new ExcelImportException(e);
