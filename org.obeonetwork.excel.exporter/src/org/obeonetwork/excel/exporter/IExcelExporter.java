@@ -18,5 +18,7 @@ public interface IExcelExporter {
 	List<String> getPropertyValuesToExport ();
 
 	String getName();
+	
+	IExportExcelLabelProvider getExporterLabelProvider ();
 
 }

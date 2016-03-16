@@ -3,6 +3,7 @@ package org.obeonetwork.excel.exporter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -30,6 +31,15 @@ public class ExcelExporterEngine {
 	FileOutputStream _file;
 
 	IExcelExporter _exporter;
+	private IExportExcelLabelProvider _formater;
+
+	public IExportExcelLabelProvider getFormater() {
+		return _formater;
+	}
+
+	public void setFormater(IExportExcelLabelProvider formater) {
+		this._formater = formater;
+	}
 
 	public ExcelExporterEngine(EObject sourceObject) {
 		_startupObject = sourceObject;
@@ -59,6 +69,8 @@ public class ExcelExporterEngine {
 
 			List<EStructuralFeature> featuresToExport = _exporter.getFeaturesToExport ();
 			List<String> pvToExport = _exporter.getPropertyValuesToExport();
+			
+			setFormater(_exporter.getExporterLabelProvider());
 
 			// creating the header
 			XSSFRow row = sheet.createRow(0);
@@ -76,16 +88,11 @@ public class ExcelExporterEngine {
 				for (EStructuralFeature feature : featuresToExport) {
 					XSSFCell cel = datarow.createCell(column++);
 					Object obj = null; 
-					if (eObject.eClass().getEAllAttributes().contains(feature))
-						obj =eObject.eGet(feature);
-					if (obj == null && eObject instanceof CapellaElement) {
-						CapellaElement capellaElement = (CapellaElement) eObject;
-						for (ElementExtension extension: capellaElement.getOwnedExtensions()) {
-							if (extension.eClass().getEAllAttributes().contains(feature))
-								obj =extension.eGet(feature);
-							if (obj != null) break;
-						}
-					}
+					obj = exportAttribute(eObject, feature);
+					if (obj==null)
+						obj = exportReference(eObject, feature);
+					
+					obj = formatValue(obj);
 					cel.setCellValue(obj==null?"null":obj.toString());
 				}
 				
@@ -104,6 +111,37 @@ public class ExcelExporterEngine {
 		} catch (IOException e){
 			throw new ExcelExportException(e);
 		}
+	}
+	
+	private Object formatValue(Object obj) {
+		if (_formater == null) return obj;
+		if (obj instanceof Collection) {
+			Collection col = (Collection) obj;
+			return _formater.toString(col);
+		}
+		return _formater.toString(obj);
+	}
+
+	private Object exportReference(EObject eObject, EStructuralFeature feature) {
+		Object obj = null;
+		if (eObject.eClass().getEAllReferences().contains(feature))
+			obj =eObject.eGet(feature);
+		return obj;
+	}
+
+	private Object exportAttribute(EObject eObject, EStructuralFeature feature) {
+		Object obj = null;
+		if (eObject.eClass().getEAllAttributes().contains(feature))
+			obj =eObject.eGet(feature);
+		if (obj == null && eObject instanceof CapellaElement) {
+			CapellaElement capellaElement = (CapellaElement) eObject;
+			for (ElementExtension extension: capellaElement.getOwnedExtensions()) {
+				if (extension.eClass().getEAllAttributes().contains(feature))
+					obj =extension.eGet(feature);
+				if (obj != null) break;
+			}
+		}
+		return obj;
 	}
 
 	private String getPVValue(AbstractPropertyValue pv) {
