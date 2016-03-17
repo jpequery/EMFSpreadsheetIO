@@ -85,6 +85,14 @@ public class ExcelExporterEngine {
 			for (EObject eObject : objectsToExport) {
 				column = 0;
 				XSSFRow datarow = sheet.createRow(line++);
+				if (_exporter instanceof IAdvancedExcelExporter) {
+					IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
+					for (String str: axe.prepend(line, eObject)) {
+						XSSFCell cel = datarow.createCell(column++);
+						cel.setCellValue(str);
+					}
+					
+				}
 				for (EStructuralFeature feature : featuresToExport) {
 					XSSFCell cel = datarow.createCell(column++);
 					Object obj = null; 
@@ -101,6 +109,14 @@ public class ExcelExporterEngine {
 					cel.setCellValue (getPVValue (pv));
 				}
 				
+				if (_exporter instanceof IAdvancedExcelExporter) {
+					IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
+					for (String str: axe.postpend(line, eObject)) {
+						XSSFCell cel = datarow.createCell(column++);
+						cel.setCellValue(str);
+					}
+					
+				}
 				
 			}
 			URI uri = _startupObject.eResource().getURI();
