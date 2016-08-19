@@ -75,6 +75,14 @@ public class ExcelExporterEngine {
 			// creating the header
 			XSSFRow row = sheet.createRow(0);
 			int column = 0;
+			if (_exporter instanceof IAdvancedExcelExporter) {
+				IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
+				for (String str : axe.prepend(0, null)) {
+					XSSFCell cel = row.createCell(column++);
+					cel.setCellValue(str);					
+				}
+				
+			}				
 			for (EStructuralFeature feature : featuresToExport) {
 				XSSFCell cel = row.createCell(column++);
 				cel.setCellValue(feature.getName());
