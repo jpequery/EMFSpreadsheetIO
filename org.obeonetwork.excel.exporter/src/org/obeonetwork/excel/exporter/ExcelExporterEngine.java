@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -77,7 +78,7 @@ public class ExcelExporterEngine {
 			int column = 0;
 			if (_exporter instanceof IAdvancedExcelExporter) {
 				IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
-				for (String str : axe.prepend(0, null)) {
+				for (String str : axe.prepend(0, _startupObject)) {
 					XSSFCell cel = row.createCell(column++);
 					cel.setCellValue(str);					
 				}
@@ -119,14 +120,16 @@ public class ExcelExporterEngine {
 				
 				if (_exporter instanceof IAdvancedExcelExporter) {
 					IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
-					for (String str: axe.postpend(line, eObject)) {
-						XSSFCell cel = datarow.createCell(column++);
-						cel.setCellValue(str);
+					List<String> strs = axe.postpend(line, eObject);
+					if (strs != null){
+						for (String str: strs) {
+							XSSFCell cel = datarow.createCell(column++);
+							cel.setCellValue(str);
+						}
 					}
-					
 				}
 				
-			}
+			}			
 			URI uri = _startupObject.eResource().getURI();
 			URI excelURI = uri.trimFileExtension().appendFileExtension("xlsx");
 			IFile excelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path (excelURI.toPlatformString(true))); 
