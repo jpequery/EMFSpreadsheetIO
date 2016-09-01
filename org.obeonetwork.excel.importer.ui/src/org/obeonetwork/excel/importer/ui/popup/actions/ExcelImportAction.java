@@ -51,6 +51,7 @@ public class ExcelImportAction implements IObjectActionDelegate {
 		List<IExcelImporter> importers = ExcelImporterManager.eINSTANCE.getAllImporters ();
 		
 		ImporterSelectionDialog dialog = new ImporterSelectionDialog(shell, importers);
+//		dialog.getShell().setText("Excel importer selection");
 		
 		if (dialog.open() == Dialog.OK){
 			IExcelImporter importer = dialog.getSelectedImporter ();
