@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Functions
+Bundle-SymbolicName: com.thalesgroup.clarity.excelimport.examples;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.thalesgroup.clarity.excelimport.examples.Activator
+Bundle-Vendor: THALESGROUP
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.excel.importer;bundle-version="1.0.0",
+ org.polarsys.capella.core.data.gen;bundle-version="1.0.0",
+ org.obeonetwork.excel.exporter;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
