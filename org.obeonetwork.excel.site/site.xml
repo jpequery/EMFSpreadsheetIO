@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.obeonetwork.excel.engine.feature_1.0.0.201609011107.jar" id="org.obeonetwork.excel.engine.feature" version="1.0.0.201609011107"/>
-   <feature url="features/org.obeonetwork.excel.examples.feature_1.0.0.201609011107.jar" id="org.obeonetwork.excel.examples.feature" version="1.0.0.201609011107"/>
+   <feature url="features/org.obeonetwork.excel.engine.feature_1.0.0.201609161307.jar" id="org.obeonetwork.excel.engine.feature" version="1.0.0.201609161307"/>
+   <feature url="features/org.obeonetwork.excel.examples.feature_1.0.0.201609161307.jar" id="org.obeonetwork.excel.examples.feature" version="1.0.0.201609161307"/>
 </site>
