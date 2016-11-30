@@ -2,12 +2,10 @@ package org.obeonetwork.excel.exporter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,14 +15,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.polarsys.capella.core.data.capellacore.AbstractPropertyValue;
-import org.polarsys.capella.core.data.capellacore.BooleanPropertyValue;
-import org.polarsys.capella.core.data.capellacore.CapellaElement;
-import org.polarsys.capella.core.data.capellacore.EnumerationPropertyValue;
-import org.polarsys.capella.core.data.capellacore.FloatPropertyValue;
-import org.polarsys.capella.core.data.capellacore.IntegerPropertyValue;
-import org.polarsys.capella.core.data.capellacore.StringPropertyValue;
-import org.polarsys.kitalpha.emde.model.ElementExtension;
+import org.obeonetwork.excel.exporter.extensions.ExcelExporterMetamodelExtensionDescriptor;
+import org.obeonetwork.excel.exporter.extensions.ExcelExporterMetamodelExtensionRegistry;
 
 public class ExcelExporterEngine {
 	private IFile _excelFile;
@@ -113,10 +105,15 @@ public class ExcelExporterEngine {
 					cel.setCellValue(obj==null?"null":obj.toString());
 				}
 				
-				for (AbstractPropertyValue pv : getPV (eObject, pvToExport)) {
-					XSSFCell cel = datarow.createCell(column++);
-					cel.setCellValue (getPVValue (pv));
+				for (ExcelExporterMetamodelExtensionDescriptor ext : ExcelExporterMetamodelExtensionRegistry.getRegisteredExtensions()) {
+					IExcelMetamodelExtension extension = ext.getExcelMetamodelExtension();
+					List<String> extStr = extension.generateExtensions (eObject, pvToExport);
+					for (String string : extStr) {
+						XSSFCell cel = datarow.createCell(column++);
+						cel.setCellValue (string);
+					}
 				}
+
 				
 				if (_exporter instanceof IAdvancedExcelExporter) {
 					IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
@@ -135,6 +132,7 @@ public class ExcelExporterEngine {
 			IFile excelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path (excelURI.toPlatformString(true))); 
 			_file = new FileOutputStream(excelFile.getRawLocation().makeAbsolute().toFile());
 			sheet.getWorkbook().write(_file);
+			sheet.getWorkbook().close();
 		} catch (IOException e){
 			throw new ExcelExportException(e);
 		}
@@ -160,44 +158,8 @@ public class ExcelExporterEngine {
 		Object obj = null;
 		if (eObject.eClass().getEAllAttributes().contains(feature))
 			obj =eObject.eGet(feature);
-		if (obj == null && eObject instanceof CapellaElement) {
-			CapellaElement capellaElement = (CapellaElement) eObject;
-			for (ElementExtension extension: capellaElement.getOwnedExtensions()) {
-				if (extension.eClass().getEAllAttributes().contains(feature))
-					obj =extension.eGet(feature);
-				if (obj != null) break;
-			}
-		}
 		return obj;
 	}
 
-	private String getPVValue(AbstractPropertyValue pv) {
-		if (pv instanceof StringPropertyValue)
-			return ((StringPropertyValue)pv).getValue();
-		if (pv instanceof EnumerationPropertyValue)
-			return ((EnumerationPropertyValue)pv).getValue().toString();
-		if (pv instanceof BooleanPropertyValue)
-			return "true";
-		if (pv instanceof FloatPropertyValue)
-			return Float.toString(((FloatPropertyValue)pv).getValue());
-		if (pv instanceof IntegerPropertyValue)
-			return Integer.toString(((IntegerPropertyValue)pv).getValue());
-		throw new RuntimeException("IncompatiblePropertyValue " + pv.toString());
-	}
 
-	private List<AbstractPropertyValue> getPV(EObject eObject, List<String> pvToExport) {
-		if (eObject instanceof CapellaElement) {
-			CapellaElement capellaElement = (CapellaElement) eObject;
-			if (pvToExport == IExcelExporter.ALL_PROPERTY_VALUES)
-				return capellaElement.getAppliedPropertyValues();
-			List<AbstractPropertyValue> result = new ArrayList<AbstractPropertyValue>(capellaElement.getAppliedPropertyValues().size());
-			
-			for (AbstractPropertyValue apv : capellaElement.getAppliedPropertyValues()) {
-				if (pvToExport.contains(apv.getName()))
-					result.add (apv);
-			}
-			return result;
-		}
-		return new ArrayList<AbstractPropertyValue>(0);
-	}
 }

@@ -9,17 +9,20 @@ import org.eclipse.core.runtime.Platform;
 
 public class ExcelExporterExtensionListener implements IRegistryEventListener {
 	private static final Object EXCEL_EXPORTER_TAG_EXTENSION = "exporter";
+	private static final Object EXCEL_EXPORTER_MM_TAG_EXTENSION = "metamodelextension";
 
 	private static final String EXCEL_EXPORTER_EXTENSION_POINT = "org.obeonetwork.excel.exporter";
+
+	private static final String EXCEL_EXPORTER_MM_EXTENSION_POINT = "org.obeonetwork.excel.exporter.metamodelextension";
 
 	@Override
 	public void added(IExtension[] extensions) {
 		for (IExtension extension : extensions) {
-			parseExtension(extension);
+			parseExporterExtension(extension);
 		}
 	}
 
-	private void parseExtension(IExtension extension) {
+	private void parseExporterExtension(IExtension extension) {
 		IConfigurationElement[] elements = extension.getConfigurationElements();
 		for (IConfigurationElement element : elements) {
 			if (EXCEL_EXPORTER_TAG_EXTENSION.equals(element.getName())) {
@@ -48,10 +51,25 @@ public class ExcelExporterExtensionListener implements IRegistryEventListener {
 
 		for (IExtension extension : registry.getExtensionPoint(EXCEL_EXPORTER_EXTENSION_POINT)
 				.getExtensions()) {
-			parseExtension(extension);
+			parseExporterExtension(extension);
+		}
+		
+		for (IExtension extension : registry.getExtensionPoint(EXCEL_EXPORTER_MM_EXTENSION_POINT)
+				.getExtensions()) {
+			parseMetamodelExtension(extension);
 		}
 	}
 	
+	private void parseMetamodelExtension(IExtension extension) {
+		IConfigurationElement[] elements = extension.getConfigurationElements();
+		for (IConfigurationElement element : elements) {
+			if (EXCEL_EXPORTER_MM_TAG_EXTENSION.equals(element.getName())) {
+				ExcelExporterMetamodelExtensionRegistry
+						.addExtension(new ExcelExporterMetamodelExtensionDescriptor(element));
+			}
+		}
+	}
+
 	@Override
 	public void added(IExtensionPoint[] extensionPoints) {
 		// TODO Auto-generated method stub

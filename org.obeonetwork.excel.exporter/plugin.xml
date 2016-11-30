@@ -2,5 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.obeonetwork.excel.exporter" name="exporter" schema="schema/org.obeonetwork.excel.exporter.exsd"/>
+   <extension-point id="org.obeonetwork.excel.exporter.metamodelextension" name="metamodelextension" schema="schema/org.obeonetwork.excel.exporter.metamodelextension.exsd"/>
 
 </plugin>

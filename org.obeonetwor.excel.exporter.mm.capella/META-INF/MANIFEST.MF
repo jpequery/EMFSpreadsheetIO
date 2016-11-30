@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Capella
+Bundle-SymbolicName: org.obeonetwork.excel.exporter.mm.capella;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.obeonetwork.excel.exporter;bundle-version="1.0.0"

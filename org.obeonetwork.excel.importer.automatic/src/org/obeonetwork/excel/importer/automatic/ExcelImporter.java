@@ -38,7 +38,7 @@ public class ExcelImporter implements IExcelImporter {
 		EObject element = findElementById (id);
 		if (element == null) {
 			System.out.println("unknownn Object for import : " + id);
-		}
+		} 
 		for (int i=2; i<lineData.size(); i++) {
 			EStructuralFeature dataRef = null; 
 			for (EStructuralFeature ref : element.eClass().getEAllStructuralFeatures()) {
@@ -78,7 +78,7 @@ public class ExcelImporter implements IExcelImporter {
 	private Object getId(EObject element) {
 		for (EAttribute att : element.eClass().getEAllAttributes()) {
 			if(att.isID()) {
-				return element.eGet(att);
+				return element.eGet(att).toString();
 			}
 		}
 		return null;
