@@ -5,16 +5,16 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.obeonetwork.excel.exporter.AbstractPropertyValue;
-import org.obeonetwork.excel.exporter.BooleanPropertyValue;
-import org.obeonetwork.excel.exporter.CapellaElement;
-import org.obeonetwork.excel.exporter.ElementExtension;
-import org.obeonetwork.excel.exporter.EnumerationPropertyValue;
-import org.obeonetwork.excel.exporter.FloatPropertyValue;
 import org.obeonetwork.excel.exporter.IExcelExporter;
 import org.obeonetwork.excel.exporter.IExcelMetamodelExtension;
-import org.obeonetwork.excel.exporter.IntegerPropertyValue;
-import org.obeonetwork.excel.exporter.StringPropertyValue;
+import org.polarsys.capella.core.data.capellacore.AbstractPropertyValue;
+import org.polarsys.capella.core.data.capellacore.BooleanPropertyValue;
+import org.polarsys.capella.core.data.capellacore.CapellaElement;
+import org.polarsys.capella.core.data.capellacore.EnumerationPropertyValue;
+import org.polarsys.capella.core.data.capellacore.FloatPropertyValue;
+import org.polarsys.capella.core.data.capellacore.IntegerPropertyValue;
+import org.polarsys.capella.core.data.capellacore.StringPropertyValue;
+import org.polarsys.kitalpha.emde.model.ElementExtension;
 
 public class ExcelMetamodelExtension implements IExcelMetamodelExtension {
 
@@ -69,10 +69,10 @@ public class ExcelMetamodelExtension implements IExcelMetamodelExtension {
 
 	@Override
 	public List<String> generateExtensions(EObject eObject, List<String> pvToExport) {
-		List<String> result = new ArrayList<>(String); 
+		List<String> result = new ArrayList<String>(); 
 		for (AbstractPropertyValue pv : getPV (eObject, pvToExport)) {
 			result.add(getPVValue (pv));
-			return result;	
 		}		
+		return result;	
 	}
 }
