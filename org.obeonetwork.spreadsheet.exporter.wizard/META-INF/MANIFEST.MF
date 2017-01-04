@@ -6,5 +6,5 @@ Bundle-Version: 0.5.0.qualifier
 Bundle-Activator: org.obeonetwork.spreadsheet.exporter.wizard.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.obeonetwork.spreadsheet.exporter;bundle-version="1.0.0"
+ org.obeonetwork.spreadsheet.exporter;bundle-version="0.5.0"
 Bundle-ActivationPolicy: lazy
