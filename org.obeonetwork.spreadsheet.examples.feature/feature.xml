@@ -2,7 +2,7 @@
 <feature
       id="org.obeonetwork.spreadsheet.examples.feature"
       label="Spreadsheet Engine examples"
-      version="1.0.0.qualifier"
+      version="0.5.0.qualifier"
       provider-name="Obeonetwork">
 
    <description url="http://www.example.com/description">
