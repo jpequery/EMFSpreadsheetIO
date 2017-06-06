@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.obeonetwork.spreadsheet.exporter.extensions.ExcelExporterMetamodelExtensionDescriptor;
 import org.obeonetwork.spreadsheet.exporter.extensions.ExcelExporterMetamodelExtensionRegistry;
 
+
+
 public class ExcelExporterEngine {
 	private IFile _excelFile;
 	private EObject _startupObject;
