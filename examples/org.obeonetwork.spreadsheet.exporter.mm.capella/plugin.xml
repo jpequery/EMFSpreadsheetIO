@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.obeonetwork.excel.exporter.metamodelextension">
+      <metamodel_extension
+            classname="org.obeonetwork.spreadsheet.exporter.mm.capella.ExcelMetamodelExtension"
+            name="org.obeonetwork.excel.exporter.mm.capella.metamodel_extension">
+      </metamodel_extension>
+   </extension>
+
+</plugin>

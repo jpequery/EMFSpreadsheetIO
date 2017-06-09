@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Spreadsheet Export Wizard
+Bundle-SymbolicName: org.obeonetwork.spreadsheet.exporter.wizard;singleton:=true
+Bundle-Version: 0.5.0.qualifier
+Bundle-Activator: org.obeonetwork.spreadsheet.exporter.wizard.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.obeonetwork.spreadsheet.exporter;bundle-version="0.5.0"
+Bundle-ActivationPolicy: lazy

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Spreadsheet Importer Example
+Bundle-SymbolicName: org.obeonetwork.spreadsheet.importer.ecore.example;singleton:=true
+Bundle-Version: 0.5.0.qualifier
+Bundle-Activator: org.obeonetwork.spreadsheet.importer.ecore.example.Activator
+Bundle-Vendor: Obeonetwork
+Require-Bundle: org.eclipse.core.runtime,
+ org.obeonetwork.spreadsheet.importer;bundle-version="0.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: org.obeonetwork.spreadsheet.importer.ecore.example

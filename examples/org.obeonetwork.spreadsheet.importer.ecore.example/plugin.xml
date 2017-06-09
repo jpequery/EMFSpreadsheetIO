@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.obeonetwork.excel.importer">
+      <importer
+            className="org.obeonetwork.spreadsheet.importer.ecore.example.ECoreExcelImporter"
+            name="org.obeonetwork.excel.importer.ecore.example.importer">
+      </importer>
+   </extension>
+
+</plugin>
