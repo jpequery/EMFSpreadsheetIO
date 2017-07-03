@@ -16,19 +16,49 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+/**
+ * support for excel file for properties : giving a metaclass, 
+ * this exporter select a set of properties to export by column 
+ * @author Jpequery
+ *
+ */
 public interface IExcelExporter {
 	
 	// gruik ?
 	static List<String> ALL_PROPERTY_VALUES = new ArrayList<String>();
 
+	/**
+	 * retrieve the list of all objects to export (one by line)
+	 * @param _startupObject
+	 * @return
+	 */
 	List<EObject> getObjectsToExport(EObject _startupObject);
 
+	/**
+	 * retrieve the list of all structural feature to export
+	 * @return
+	 */
 	List<EStructuralFeature> getFeaturesToExport();
 	
+	/**
+	 * retrieve the list of propertyValue to export.
+	 * Capella SPecific. If doen't apply, return  null
+	 * @return
+	 */
 	List<String> getPropertyValuesToExport ();
 
+	/**
+	 * return the name of the exporter, as seen in the export
+	 * user interface
+	 * @return
+	 */
 	String getName();
 	
+	/**
+	 * return a label provider for the export: how can we display
+	 * EObject or List<EObject> in the resulting file
+	 * @return
+	 */
 	IExportExcelLabelProvider getExporterLabelProvider ();
 
 }
