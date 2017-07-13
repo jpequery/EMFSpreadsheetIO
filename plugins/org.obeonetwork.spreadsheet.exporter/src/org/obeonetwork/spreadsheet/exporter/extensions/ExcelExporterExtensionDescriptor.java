@@ -12,7 +12,7 @@
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.obeonetwork.spreadsheet.exporter.IExcelExporter;
+import org.obeonetwork.spreadsheet.exporter.IRegisteredExcelExporter;
 
 public class ExcelExporterExtensionDescriptor {
 	public static final String EXCEL_EXPORT_ATTRIBUTE_EXTENSION_NAME = "name";
@@ -21,12 +21,12 @@ public class ExcelExporterExtensionDescriptor {
 
 	private String _name;
 
-	private IExcelExporter _exporter;
+	private IRegisteredExcelExporter _exporter;
 
 	public ExcelExporterExtensionDescriptor (IConfigurationElement configuration) {
 		_name = configuration.getAttribute(EXCEL_EXPORT_ATTRIBUTE_EXTENSION_NAME);		
 		try {
-			_exporter = (IExcelExporter) configuration.createExecutableExtension(EXCEL_EXPORT_ATTRIBUTE_EXTENSION_CLASSNAME);
+			_exporter = (IRegisteredExcelExporter) configuration.createExecutableExtension(EXCEL_EXPORT_ATTRIBUTE_EXTENSION_CLASSNAME);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class ExcelExporterExtensionDescriptor {
 		
 	}
 
-	public IExcelExporter getExcelImporter() {
+	public IRegisteredExcelExporter getExcelExporter() {
 		return _exporter;
 	}
 

@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.obeonetwork.spreadsheet.exporter.IExcelExporter;
-import org.obeonetwork.spreadsheet.importer.IExcelImporter;
+import org.obeonetwork.spreadsheet.exporter.IRegisteredExcelExporter;
 
 public class ExporterSelectionDialog extends org.eclipse.jface.dialogs.Dialog {
 	private Combo _combo;
@@ -32,7 +32,7 @@ public class ExporterSelectionDialog extends org.eclipse.jface.dialogs.Dialog {
 		label.setText("Select an excel exporter");
 		
 		_combo = new Combo(container, SWT.SINGLE | SWT.READ_ONLY);		
-		for (IExcelExporter iExcelExporter : _exporters) {
+		for (IRegisteredExcelExporter iExcelExporter : _exporters) {
 			_combo.add(iExcelExporter.getName ());
 		}
 		_combo.select(0);
@@ -43,15 +43,15 @@ public class ExporterSelectionDialog extends org.eclipse.jface.dialogs.Dialog {
 
 
 
-	private List<IExcelExporter> _exporters;
-	private IExcelExporter _selectedExporter;
+	private List<IRegisteredExcelExporter> _exporters;
+	private IRegisteredExcelExporter _selectedExporter;
 
-	public ExporterSelectionDialog(Shell parent, List<IExcelExporter> exporters) {
+	public ExporterSelectionDialog(Shell parent, List<IRegisteredExcelExporter> exporters) {
 		super(parent);
 		_exporters = exporters;
 }
 
-	public IExcelExporter getSelectedExporter() {
+	public IRegisteredExcelExporter getSelectedExporter() {
 		return _selectedExporter;
 	}
 

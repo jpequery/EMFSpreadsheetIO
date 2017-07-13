@@ -27,7 +27,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.obeonetwork.spreadsheet.exporter.ExcelExportException;
 import org.obeonetwork.spreadsheet.exporter.ExcelExporterEngine;
 import org.obeonetwork.spreadsheet.exporter.ExcelExporterManager;
-import org.obeonetwork.spreadsheet.exporter.IExcelExporter;
+import org.obeonetwork.spreadsheet.exporter.IRegisteredExcelExporter;
 import org.obeonetwork.spreadsheet.importer.ui.ExporterSelectionDialog;
 
 public class ExcelExportAction implements IObjectActionDelegate {
@@ -55,12 +55,12 @@ public class ExcelExportAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 
-		List<IExcelExporter> exporters = ExcelExporterManager.eINSTANCE.getAllExporters ();
+		List<IRegisteredExcelExporter> exporters = ExcelExporterManager.eINSTANCE.getAllExporters ();
 		
 		ExporterSelectionDialog dialog = new ExporterSelectionDialog(shell, exporters);
 		
 		if (dialog.open() == Dialog.OK){
-			IExcelExporter exporter = dialog.getSelectedExporter ();
+			IRegisteredExcelExporter exporter = dialog.getSelectedExporter ();
 			final ExcelExporterEngine engine = new ExcelExporterEngine(sourceObject);
 			engine.setExporter(exporter);
 			

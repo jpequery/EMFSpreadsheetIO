@@ -25,13 +25,13 @@ public class ExcelExporterManager {
 		// nothing to do
 	}
 
-	public List<IExcelExporter> getAllExporters() {
+	public List<IRegisteredExcelExporter> getAllExporters() {
 		List<ExcelExporterExtensionDescriptor> extensions = ExcelExporterExtensionRegistry.getRegisteredExtensions();
 		
-		List<IExcelExporter> result = new ArrayList<IExcelExporter>(extensions.size());
+		List<IRegisteredExcelExporter> result = new ArrayList<IRegisteredExcelExporter>(extensions.size());
 		
 		for (ExcelExporterExtensionDescriptor extension : extensions) {
-			result.add(extension.getExcelImporter());
+			result.add(extension.getExcelExporter());
 		}
 		
 		return result;

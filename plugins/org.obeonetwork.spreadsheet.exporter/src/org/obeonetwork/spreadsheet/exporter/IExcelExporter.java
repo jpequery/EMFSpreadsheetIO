@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author Jpequery
  *
  */
-public interface IExcelExporter {
+public interface IExcelExporter extends IRegisteredExcelExporter {
 	
 	// gruik ?
 	static List<String> ALL_PROPERTY_VALUES = new ArrayList<String>();
@@ -47,12 +47,7 @@ public interface IExcelExporter {
 	 */
 	List<String> getPropertyValuesToExport ();
 
-	/**
-	 * return the name of the exporter, as seen in the export
-	 * user interface
-	 * @return
-	 */
-	String getName();
+
 	
 	/**
 	 * return a label provider for the export: how can we display

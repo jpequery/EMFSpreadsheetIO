@@ -35,7 +35,7 @@ public class ExcelExporterEngine {
 	private EObject _startupObject;
 	FileOutputStream _file;
 
-	IExcelExporter _exporter;
+	IRegisteredExcelExporter _exporter;
 	private IExportExcelLabelProvider _formater;
 
 	public IExportExcelLabelProvider getFormater() {
@@ -50,7 +50,7 @@ public class ExcelExporterEngine {
 		_startupObject = sourceObject;
 	}
 
-	public void setExporter(IExcelExporter exporter) {
+	public void setExporter(IRegisteredExcelExporter exporter) {
 		_exporter = exporter;
 	}
 
@@ -70,12 +70,14 @@ public class ExcelExporterEngine {
 		try {
 			XSSFSheet sheet = openExcelFile(_excelFile);
 			
-			List<EObject> objectsToExport = _exporter.getObjectsToExport (_startupObject);
-
-			List<EStructuralFeature> featuresToExport = _exporter.getFeaturesToExport ();
-			List<String> pvToExport = _exporter.getPropertyValuesToExport();
+			IExcelExporter exporter = (IExcelExporter) _exporter;
 			
-			setFormater(_exporter.getExporterLabelProvider());
+			List<EObject> objectsToExport = exporter.getObjectsToExport (_startupObject);
+
+			List<EStructuralFeature> featuresToExport = exporter.getFeaturesToExport ();
+			List<String> pvToExport = exporter.getPropertyValuesToExport();
+			
+			setFormater(exporter.getExporterLabelProvider());
 
 			// creating the header
 			XSSFRow row = sheet.createRow(0);
