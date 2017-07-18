@@ -12,8 +12,11 @@
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -54,103 +57,129 @@ public class ExcelExporterEngine {
 		_exporter = exporter;
 	}
 
-	protected XSSFSheet openExcelFile(IFile excelFile) throws IOException {
-//		
+	protected XSSFWorkbook createWorkbook(IFile excelFile) throws IOException {
+		 return new XSSFWorkbook();
+	 }
 
-		// Get the workbook instance for XLS file
-		XSSFWorkbook workbook = new XSSFWorkbook();
+	 protected XSSFSheet openExcelFile(IFile excelFile) throws IOException {
+		 //
 
-		// Get first sheet from the workbook
-		XSSFSheet sheet = workbook.createSheet("Excel sheet");
+		 // Get the workbook instance for XLS file
+		 XSSFWorkbook workbook = createWorkbook(excelFile);
 
-		return sheet;
-	}
+		 // Get first sheet from the workbook
+		 XSSFSheet sheet = workbook.createSheet("Excel sheet");
 
-	public void run () throws ExcelExportException {
-		try {
-			XSSFSheet sheet = openExcelFile(_excelFile);
-			
-			IExcelExporter exporter = (IExcelExporter) _exporter;
-			
-			List<EObject> objectsToExport = exporter.getObjectsToExport (_startupObject);
+		 return sheet;
+	 }
 
-			List<EStructuralFeature> featuresToExport = exporter.getFeaturesToExport ();
-			List<String> pvToExport = exporter.getPropertyValuesToExport();
-			
-			setFormater(exporter.getExporterLabelProvider());
+	 public void run () throws ExcelExportException {
+		 try {
+			 Map<XSSFSheet, IExcelExporter> pageExporters = new HashMap<XSSFSheet, IExcelExporter>();
+			 List<XSSFSheet> pageOrder = new ArrayList<XSSFSheet>();
+			 XSSFSheet initSheet = null;
+			 XSSFWorkbook workbook = null;
+			 if (_exporter instanceof IMultipageExcelExporter) {
+				 IMultipageExcelExporter multiExporter = (IMultipageExcelExporter)_exporter;
+				 workbook = createWorkbook(_excelFile);
+				 for (String pageName : multiExporter.getPageNames()) {
+					 XSSFSheet page = workbook.createSheet(pageName);
+					 pageExporters.put(page, multiExporter.getExporter(pageName));
+					 pageOrder.add(page);
+				 }
+				 setFormater(multiExporter.getExporterLabelProvider());
+			 }else{
+				 initSheet = openExcelFile(_excelFile);
+				 workbook = initSheet.getWorkbook();
+				 pageExporters.put(initSheet, (IExcelExporter) _exporter);
+				 pageOrder.add(initSheet);
+				 setFormater(((IExcelExporter) _exporter).getExporterLabelProvider());
+			 }
 
-			// creating the header
-			XSSFRow row = sheet.createRow(0);
-			int column = 0;
-			if (_exporter instanceof IAdvancedExcelExporter) {
-				IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
-				for (String str : axe.prepend(0, _startupObject)) {
-					XSSFCell cel = row.createCell(column++);
-					cel.setCellValue(str);					
-				}
-				
-			}				
-			for (EStructuralFeature feature : featuresToExport) {
-				XSSFCell cel = row.createCell(column++);
-				cel.setCellValue(feature.getName());
-			}
+			 for (XSSFSheet sheet : pageOrder) {
+				 IExcelExporter exporter = pageExporters.get(sheet);
+				 List<EObject> objectsToExport = exporter.getObjectsToExport (_startupObject);
 
-			// content of the file
-			int line = 1;
-			for (EObject eObject : objectsToExport) {
-				column = 0;
-				XSSFRow datarow = sheet.createRow(line++);
-				if (_exporter instanceof IAdvancedExcelExporter) {
-					IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
-					for (String str: axe.prepend(line, eObject)) {
-						XSSFCell cel = datarow.createCell(column++);
-						cel.setCellValue(str);
-					}
-					
-				}
-				for (EStructuralFeature feature : featuresToExport) {
-					XSSFCell cel = datarow.createCell(column++);
-					Object obj = null; 
-					obj = exportAttribute(eObject, feature);
-					if (obj==null)
-						obj = exportReference(eObject, feature);
-					
-					obj = formatValue(obj);
-					cel.setCellValue(obj==null?"null":obj.toString());
-				}
-				
-				for (ExcelExporterMetamodelExtensionDescriptor ext : ExcelExporterMetamodelExtensionRegistry.getRegisteredExtensions()) {
-					IExcelMetamodelExtension extension = ext.getExcelMetamodelExtension();
-					List<String> extStr = extension.generateExtensions (eObject, pvToExport);
-					for (String string : extStr) {
-						XSSFCell cel = datarow.createCell(column++);
-						cel.setCellValue (string);
-					}
-				}
+				 List<EStructuralFeature> featuresToExport = exporter.getFeaturesToExport ();
+				 List<String> pvToExport = exporter.getPropertyValuesToExport();
 
-				
-				if (_exporter instanceof IAdvancedExcelExporter) {
-					IAdvancedExcelExporter axe = (IAdvancedExcelExporter) _exporter;
-					List<String> strs = axe.postpend(line, eObject);
-					if (strs != null){
-						for (String str: strs) {
-							XSSFCell cel = datarow.createCell(column++);
-							cel.setCellValue(str);
-						}
-					}
-				}
-				
-			}			
-			URI uri = _startupObject.eResource().getURI();
-			URI excelURI = uri.trimFileExtension().appendFileExtension("xlsx");
-			IFile excelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path (excelURI.toPlatformString(true))); 
-			_file = new FileOutputStream(excelFile.getRawLocation().makeAbsolute().toFile());
-			sheet.getWorkbook().write(_file);
-			sheet.getWorkbook().close();
-		} catch (IOException e){
-			throw new ExcelExportException(e);
-		}
-	}
+				 // creating the header
+				 XSSFRow row = sheet.createRow(0);
+				 int column = 0;
+				 if (exporter instanceof IAdvancedExcelExporter) {
+					 IAdvancedExcelExporter axe = (IAdvancedExcelExporter) exporter;
+					 for (String str : axe.prepend(0, _startupObject)) {
+						 XSSFCell cel = row.createCell(column++);
+						 cel.setCellValue(str);
+					 }
+
+				 }
+				 for (EStructuralFeature feature : featuresToExport) {
+					 XSSFCell cel = row.createCell(column++);
+					 cel.setCellValue(feature.getName());
+				 }
+
+				 // content of the file
+				 int line = 1;
+				 for (EObject eObject : objectsToExport) {
+					 column = 0;
+					 XSSFRow datarow = sheet.createRow(line++);
+					 if (exporter instanceof IAdvancedExcelExporter) {
+						 IAdvancedExcelExporter axe = (IAdvancedExcelExporter) exporter;
+						 for (String str: axe.prepend(line, eObject)) {
+							 XSSFCell cel = datarow.createCell(column++);
+							 cel.setCellValue(str);
+						 }
+
+					 }
+					 for (EStructuralFeature feature : featuresToExport) {
+						 XSSFCell cel = datarow.createCell(column++);
+						 Object obj = null;
+						 obj = exportAttribute(eObject, feature);
+						 if (obj==null)
+							 obj = exportReference(eObject, feature);
+
+						 obj = formatValue(obj);
+						 cel.setCellValue(obj==null?"null":obj.toString());
+					 }
+
+					 for (ExcelExporterMetamodelExtensionDescriptor ext : ExcelExporterMetamodelExtensionRegistry.getRegisteredExtensions()) {
+						 IExcelMetamodelExtension extension = ext.getExcelMetamodelExtension();
+						 List<String> extStr = extension.generateExtensions (eObject, pvToExport);
+						 for (String string : extStr) {
+							 XSSFCell cel = datarow.createCell(column++);
+							 cel.setCellValue (string);
+						 }
+					 }
+
+
+					 if (exporter instanceof IAdvancedExcelExporter) {
+						 IAdvancedExcelExporter axe = (IAdvancedExcelExporter) exporter;
+						 List<String> strs = axe.postpend(line, eObject);
+						 if (strs != null){
+							 for (String str: strs) {
+								 XSSFCell cel = datarow.createCell(column++);
+								 cel.setCellValue(str);
+							 }
+						 }
+					 }
+
+				 }
+
+			 }
+
+			 URI uri = _startupObject.eResource().getURI();
+			 URI excelURI = uri.trimFileExtension().appendFileExtension("xlsx");
+			 IFile excelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path (excelURI.toPlatformString(true)));
+			 _file = new FileOutputStream(excelFile.getRawLocation().makeAbsolute().toFile());
+			 workbook.write(_file);
+			 workbook.close();
+
+		 } catch (IOException e){
+			 throw new ExcelExportException(e);
+		 }
+	 }
+
 	
 	private Object formatValue(Object obj) {
 		if (_formater == null) return obj;
