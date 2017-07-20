@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class ExcelExporterExtensionListener implements IRegistryEventListener {
 	private static final Object EXCEL_EXPORTER_TAG_EXTENSION = "exporter";
-	private static final Object EXCEL_EXPORTER_MM_TAG_EXTENSION = "metamodelextension";
+	private static final Object EXCEL_EXPORTER_MM_TAG_EXTENSION = "metamodel_extension";
 
 	private static final String EXCEL_EXPORTER_EXTENSION_POINT = "org.obeonetwork.excel.exporter";
 

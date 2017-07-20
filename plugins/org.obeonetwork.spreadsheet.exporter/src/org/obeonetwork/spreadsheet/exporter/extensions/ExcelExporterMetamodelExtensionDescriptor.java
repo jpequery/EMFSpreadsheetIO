@@ -18,7 +18,7 @@ import org.obeonetwork.spreadsheet.exporter.IExcelMetamodelExtension;
 public class ExcelExporterMetamodelExtensionDescriptor {
 	public static final String EXCEL_EXPORT_METAMODEL_EXTENSION_NAME = "name";
 
-	public static final String EXCEL_EXPORT_METAMODEL_ATTRIBUTE_EXTENSION_CLASSNAME = "className";
+	public static final String EXCEL_EXPORT_METAMODEL_ATTRIBUTE_EXTENSION_CLASSNAME = "classname";
 
 	private String _name;
 

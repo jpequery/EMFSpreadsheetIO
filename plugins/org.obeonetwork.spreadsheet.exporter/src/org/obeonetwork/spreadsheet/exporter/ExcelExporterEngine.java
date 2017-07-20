@@ -118,6 +118,10 @@ public class ExcelExporterEngine {
 					 XSSFCell cel = row.createCell(column++);
 					 cel.setCellValue(feature.getName());
 				 }
+	             for (String string : pvToExport) {
+	                 XSSFCell cel = row.createCell(column++);
+	                 cel.setCellValue (string);
+	             }
 
 				 // content of the file
 				 int line = 1;
