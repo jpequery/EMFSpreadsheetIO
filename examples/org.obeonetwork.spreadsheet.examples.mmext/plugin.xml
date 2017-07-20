@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.obeonetwork.excel.exporter.metamodelextension">
+      <metamodel_extension
+            classname="org.obeonetwork.spreadsheet.examples.mmext.EContainerMetamodelExtension"
+            name="org.obeonetwork.spreadsheet.examples.mmext.EContainerMetamodelExtension">
+      </metamodel_extension>
+   </extension>
+   <extension
+         point="org.obeonetwork.excel.exporter">
+      <exporter
+            className="org.obeonetwork.spreadsheet.examples.mmext.ContainerExporter"
+            name="org.obeonetwork.spreadsheet.examples.mmext.exporter1">
+      </exporter>
+   </extension>
+
+</plugin>
