@@ -10,7 +10,7 @@
           Obeo - initial API and implementation
      
  -->
- <feature
+<feature
       id="org.obeonetwork.spreadsheet.examples.feature"
       label="Spreadsheet Engine examples"
       version="0.5.0.qualifier"
@@ -36,14 +36,21 @@
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.excel.importer.capella.example"
+         id="org.obeonetwork.spreadsheet.importer.capella.example"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.excel.importer.ecore.example"
+         id="org.obeonetwork.spreadsheet.importer.ecore.example"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.obeonetwork.spreadsheet.examples.mmext"
          download-size="0"
          install-size="0"
          version="0.0.0"

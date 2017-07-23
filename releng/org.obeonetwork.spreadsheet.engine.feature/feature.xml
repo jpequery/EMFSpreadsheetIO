@@ -29,35 +29,35 @@
    </license>
 
    <plugin
-         id="org.obeonetwork.excel.exporter"
+         id="org.obeonetwork.spreadsheet.exporter"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.excel.exporter.wizard"
+         id="org.obeonetwork.spreadsheet.exporter.wizard"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.excel.importer"
+         id="org.obeonetwork.spreadsheet.importer"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.excel.importer.automatic"
+         id="org.obeonetwork.spreadsheet.importer.automatic"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.obeonetwork.excel.importer.ui"
+         id="org.obeonetwork.spreadsheet.importer.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
