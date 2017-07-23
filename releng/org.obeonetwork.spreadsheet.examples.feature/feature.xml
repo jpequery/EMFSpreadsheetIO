@@ -29,20 +29,6 @@
    </license>
 
    <plugin
-         id="com.thalesgroup.clarity.excelimport.examples"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.obeonetwork.spreadsheet.importer.capella.example"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.obeonetwork.spreadsheet.importer.ecore.example"
          download-size="0"
          install-size="0"
