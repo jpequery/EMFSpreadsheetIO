@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.emf.ecore.EObject;
-import org.obeonetwork.excel.importer.IExcelImporter;
-import org.polarsys.capella.core.data.fa.AbstractFunction;
+import org.obeonetwork.spreadsheet.importer.IExcelImporter;
 import org.polarsys.capella.core.data.requirement.Requirement;
 import org.polarsys.capella.core.data.requirement.RequirementFactory;
 import org.polarsys.capella.core.data.requirement.RequirementsPkg;

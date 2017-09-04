@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.eclipse.emf.ecore.EObject;
-import org.obeonetwork.excel.importer.IExcelImporter;
+import org.obeonetwork.spreadsheet.importer.IExcelImporter;
 import org.polarsys.capella.core.data.ctx.CtxFactory;
 import org.polarsys.capella.core.data.ctx.SystemFunction;
 import org.polarsys.capella.core.data.fa.AbstractFunction;
