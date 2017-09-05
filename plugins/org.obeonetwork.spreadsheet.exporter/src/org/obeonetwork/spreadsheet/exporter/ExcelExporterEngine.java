@@ -150,9 +150,11 @@ public class ExcelExporterEngine {
 					 for (ExcelExporterMetamodelExtensionDescriptor ext : ExcelExporterMetamodelExtensionRegistry.getRegisteredExtensions()) {
 						 IExcelMetamodelExtension extension = ext.getExcelMetamodelExtension();
 						 List<String> extStr = extension.generateExtensions (eObject, pvToExport);
-						 for (String string : extStr) {
-							 XSSFCell cel = datarow.createCell(column++);
-							 cel.setCellValue (string);
+						 if (extStr != null) { // In case of extension for another metamodel
+							 for (String string : extStr) {
+								 XSSFCell cel = datarow.createCell(column++);
+								 cel.setCellValue (string);
+							 }
 						 }
 					 }
 
