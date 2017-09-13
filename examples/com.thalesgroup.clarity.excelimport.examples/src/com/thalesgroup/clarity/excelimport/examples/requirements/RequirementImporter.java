@@ -87,7 +87,7 @@ public class RequirementImporter implements IExcelImporter {
 	public void setDestination(EObject destinationObject) {
 		if (destinationObject instanceof RequirementsPkg) {
 			_destination = (RequirementsPkg) destinationObject;			
-		}
+		} else throw new IllegalArgumentException ();
 
 	}
 

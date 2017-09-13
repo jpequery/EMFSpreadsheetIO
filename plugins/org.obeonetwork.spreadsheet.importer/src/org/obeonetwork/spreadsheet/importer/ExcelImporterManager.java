@@ -13,6 +13,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.obeonetwork.spreadsheet.importer.extensions.ExcelImporterExtensionDescriptor;
 import org.obeonetwork.spreadsheet.importer.extensions.ExcelImporterExtensionRegistry;
 
@@ -26,6 +27,11 @@ public class ExcelImporterManager {
 		// nothing to do
 	}
 
+	
+	/**
+	 * return the list of all available importers. 
+	 * @return all importers
+	 */
 	public List<IExcelImporter> getAllImporters() {
 		List<ExcelImporterExtensionDescriptor> extensions = ExcelImporterExtensionRegistry.getRegisteredExtensions();
 		
@@ -36,6 +42,27 @@ public class ExcelImporterManager {
 		}
 		
 		return result;
+	}
+
+
+	/**
+	 * return all imprters compaible with thhhhhe object passed as parameter
+	 * @param destinationObject
+	 * @return
+	 */
+	public List<IExcelImporter> getImporters(EObject destinationObject) {
+		List<IExcelImporter> result = new ArrayList<IExcelImporter>();
+		for (IExcelImporter importer : getAllImporters()) {
+			try {
+				importer.setDestination(destinationObject);
+				result.add(importer);
+			} catch (IllegalArgumentException e) {
+				// it's ok ... just not compatible
+			} catch (ClassCastException e){
+				// well ... 
+			}
+		}
+		return getAllImporters ();
 	}
 	
 	

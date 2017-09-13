@@ -21,7 +21,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
@@ -58,7 +57,7 @@ public class ExcelImportAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 
-		List<IExcelImporter> importers = ExcelImporterManager.eINSTANCE.getAllImporters ();
+		List<IExcelImporter> importers = ExcelImporterManager.eINSTANCE.getImporters (destinationObject);
 		
 		ImporterSelectionDialog dialog = new ImporterSelectionDialog(shell, importers);
 //		dialog.getShell().setText("Excel importer selection");

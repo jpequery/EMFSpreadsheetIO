@@ -125,10 +125,9 @@ public class FuntionImporter implements IExcelImporter {
 
 	@Override
 	public void setDestination(EObject destinationObject) {
-		// TODO Auto-generated method stub
 		if (destinationObject instanceof AbstractFunction)
 			_destination = (AbstractFunction) destinationObject;
-	}
+	} else throw new IllegalArgumentException ();
 
 	@Override
 	public void importEnded() {

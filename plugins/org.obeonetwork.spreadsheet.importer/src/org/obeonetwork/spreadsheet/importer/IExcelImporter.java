@@ -39,10 +39,11 @@ public interface IExcelImporter {
 	
 	/**
 	 * set the destination object for the importer. Must be 
-	 * an EObject. 
-	 * @param destinationObject the original command object 
+	 * an EObject.  
+	 * @param destinationObject the original command object
+	 * @throws the parameter is not compatible with the importer
 	 */
-	public void setDestination(EObject destinationObject);
+	public void setDestination(EObject destinationObject) throws IllegalArgumentException;
 	
 	/**
 	 * called at he end of the import. It can be the moment to 

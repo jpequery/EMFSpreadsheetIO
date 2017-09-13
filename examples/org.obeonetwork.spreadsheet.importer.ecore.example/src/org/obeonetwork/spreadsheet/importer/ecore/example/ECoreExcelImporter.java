@@ -65,9 +65,8 @@ public class ECoreExcelImporter  implements IExcelImporter {
 	@Override
 	public void setDestination(EObject destinationObject) {
 		if (destinationObject instanceof EPackage) {
-			destination = (EPackage) destinationObject;
-			
-		}
+			destination = (EPackage) destinationObject;			
+		} else throw new IllegalArgumentException();
 		
 	}
 

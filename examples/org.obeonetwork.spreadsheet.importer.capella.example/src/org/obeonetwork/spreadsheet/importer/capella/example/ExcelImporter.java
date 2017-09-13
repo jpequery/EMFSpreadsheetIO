@@ -45,7 +45,7 @@ public class ExcelImporter implements IExcelImporter {
 		if (destinationObject instanceof LogicalComponent) {
 			destination = (LogicalComponent) destinationObject;
 			
-		}
+		} else throw new IllegalArgumentException ();
 	}
 
 	@Override
