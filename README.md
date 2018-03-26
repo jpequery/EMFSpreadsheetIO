@@ -9,3 +9,7 @@ This piece of software is based on Apache POI 3.16. An update site with a tested
 
 This piece of software is provided under the [EPL 1.0 Licence](http://www.eclipse.org/legal/epl-v10.html) and
 is developed by Obeo in the context of the [clarity project](http://www.clarity-se.org/)
+
+An installable version of the engine is available as an update site : [version 0.5.0](http://jpequery.free.fr/EMFSpreadsheetIO/0.5.0/).
+
+And remember the help : https://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm
