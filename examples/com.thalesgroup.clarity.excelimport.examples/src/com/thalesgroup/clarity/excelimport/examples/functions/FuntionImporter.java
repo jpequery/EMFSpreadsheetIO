@@ -98,6 +98,7 @@ public class FuntionImporter implements IExcelImporter {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		boolean bool = Boolean.parseBoolean(lineData.get(summaryField + 3));
 		
 		
@@ -127,7 +128,8 @@ public class FuntionImporter implements IExcelImporter {
 	public void setDestination(EObject destinationObject) {
 		if (destinationObject instanceof AbstractFunction)
 			_destination = (AbstractFunction) destinationObject;
-	} else throw new IllegalArgumentException ();
+		else throw new IllegalArgumentException ();
+	}			
 
 	@Override
 	public void importEnded() {

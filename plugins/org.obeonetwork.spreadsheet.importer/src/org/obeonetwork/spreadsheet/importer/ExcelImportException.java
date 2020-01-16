@@ -12,6 +12,11 @@
 
 public class ExcelImportException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ExcelImportException(Exception e) {
 		super (e);
 	}

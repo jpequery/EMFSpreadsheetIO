@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Spreadsheet Exporter
 Bundle-SymbolicName: org.obeonetwork.spreadsheet.exporter;singleton:=true
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 0.5.1.qualifier
 Bundle-Activator: org.obeonetwork.spreadsheet.exporter.Activator
 Bundle-Vendor: Obeo
 Require-Bundle: org.eclipse.core.runtime,
@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: org.obeonetwork.spreadsheet.exporter
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

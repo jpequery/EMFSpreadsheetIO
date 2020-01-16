@@ -19,7 +19,6 @@ import org.obeonetwork.spreadsheet.importer.extensions.ExcelImporterExtensionReg
 
 
 public class ExcelImporterManager {
-	private IExcelImporter _lastSelected = null;
 	
 	public static final ExcelImporterManager eINSTANCE = new ExcelImporterManager();
 	
