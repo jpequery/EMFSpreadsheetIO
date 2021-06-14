@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.obeonetwork.spreadsheet.engine.feature_0.5.2.qualifier.jar" id="org.obeonetwork.spreadsheet.engine.feature" version="0.5.2.qualifier"/>
+   <feature url="features/org.obeonetwork.spreadsheet.examples.feature_0.5.2.qualifier.jar" id="org.obeonetwork.spreadsheet.examples.feature" version="0.5.2.qualifier"/>
+</site>
