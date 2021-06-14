@@ -12,4 +12,6 @@ is developed by Obeo in the context of the [clarity project](http://www.clarity-
 
 An installable version of the engine is available as an update site : [version 0.5.0](http://jpequery.free.fr/EMFSpreadsheetIO/0.5.0/).
 
+Version 0.5.1 is currently only in repository, and works with 4.1 version of POI, availalable on m2doc 3.1.1 update site : https://www.m2doc.org/download/
+
 And remember the help : https://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-127.htm
