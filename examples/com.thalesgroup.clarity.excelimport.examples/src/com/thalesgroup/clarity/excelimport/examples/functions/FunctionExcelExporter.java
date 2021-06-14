@@ -54,6 +54,7 @@ public class FunctionExcelExporter implements IAdvancedExcelExporter, IExportExc
 	}
 
 	private int computeDeep(EObject eObject, EObject startupObject) {
+		if (eObject==startupObject) return 0;
 		int result = 1;
 		while (eObject.eContainer() != startupObject){
 			eObject = eObject.eContainer();
@@ -73,7 +74,7 @@ public class FunctionExcelExporter implements IAdvancedExcelExporter, IExportExc
 
 	@Override
 	public List<String> getPropertyValuesToExport() {
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 
 	@Override
@@ -88,6 +89,7 @@ public class FunctionExcelExporter implements IAdvancedExcelExporter, IExportExc
 
 	@Override
 	public String toString(Object object) {
+		if (object==null) return ""; // summary/description case
 		if (object instanceof AbstractNamedElement) {
 			AbstractNamedElement ane = (AbstractNamedElement) object;
 			return ane.getName();
@@ -116,7 +118,8 @@ public class FunctionExcelExporter implements IAdvancedExcelExporter, IExportExc
 		if (object != null && object instanceof AbstractNamedElement){
 			AbstractNamedElement e = (AbstractNamedElement) object;
 			int index = computeDeep(e, _startupObject);
-			result.set(index-1, e.getName());
+			if (index > 0)
+				result.set(index-1, e.getName());
 		}
 		return result;
 	}
